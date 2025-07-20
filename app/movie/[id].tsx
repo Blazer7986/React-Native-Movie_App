@@ -1,7 +1,7 @@
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -11,6 +11,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import useFetch from "@/services/useFetch";
 import { fetchMovieDetails } from "@/services/api";
 import { icons } from "@/constants/icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface MovieInfoProps {
   label: string;
@@ -31,6 +32,14 @@ const MovieDetails = () => {
     fetchMovieDetails(id as string)
   );
 
+  if (loading) {
+    return (
+      <SafeAreaView className="bg-primary flex-1">
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -42,6 +51,14 @@ const MovieDetails = () => {
             className="w-full h-[550px]"
             resizeMode="stretch"
           />
+
+          <TouchableOpacity className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center">
+            <Image
+              source={icons.play}
+              className="w-6 h-7 ml-1"
+              resizeMode="stretch"
+            />
+          </TouchableOpacity>
         </View>
 
         <View className="flex-col items-start justify-center mt-5 px-5">
@@ -66,25 +83,25 @@ const MovieDetails = () => {
           <MovieInfo label="Overview" value={movie?.overview} />
           <MovieInfo
             label="Genres"
-            value={movie?.genres?.map((g) => g.name).join(" - ") || "N/A"}
+            value={movie?.genres?.map((g) => g.name).join(" * ") || "N/A"}
           />
 
           <View className="flex flex-row justify-between w-1/2">
             <MovieInfo
               label="Budget"
-              value={`$${movie?.budget / 1_000_000} millions`}
+              value={`$${(movie?.budget ?? 0) / 1_000_000} millions`}
             />
 
             <MovieInfo
               label="Revenue"
-              value={`${Math.round(movie?.revenue) / 1_000_000}`}
+              value={`${Math.round(movie?.revenue ?? 0) / 1_000_000}`}
             />
           </View>
 
           <MovieInfo
             label="Production Companies"
             value={
-              movie?.production_companies.map((c) => c.name).join(" - ") ||
+              movie?.production_companies.map((c) => c.name).join(" * ") ||
               "N/A"
             }
           />
@@ -107,5 +124,3 @@ const MovieDetails = () => {
 };
 
 export default MovieDetails;
-
-const styles = StyleSheet.create({});

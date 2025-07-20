@@ -1,4 +1,4 @@
-import { ImageBackground, Image, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, Image, Text, View } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { images } from "@/constants/images";
@@ -18,6 +18,7 @@ const TabIcon = ({ focused, icon, title }: any) => {
       </ImageBackground>
     );
   }
+
   return (
     <View className="size-full justify-center items-center mt-4 rounded-full">
       <Image source={icon} tintColor="#A8B5DB" className="size-5"></Image>
@@ -52,7 +53,7 @@ const _layout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "index",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon={icons.home} title="Home" />
@@ -94,5 +95,3 @@ const _layout = () => {
 };
 
 export default _layout;
-
-const styles = StyleSheet.create({});
